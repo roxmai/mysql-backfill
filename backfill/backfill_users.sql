@@ -26,7 +26,7 @@ CREATE TABLE USERS (
 -- Create JOBAPPLICATION table
 CREATE TABLE JOBAPPLICATION (
     ApplicationID INT AUTO_INCREMENT PRIMARY KEY,
-    Status ENUM('Not started', 'In progress', 'Applied', 'Interview', 'Rejected', 'Accepted') NOT NULL,
+    Status ENUM('Not started', 'In progress', 'Applied', 'Interview Scheduled', 'Interview', 'Rejected', 'Accepted') NOT NULL,
     UserID INT NOT NULL,
     FOREIGN KEY (UserID) REFERENCES USERS(UserID)
         ON DELETE CASCADE
@@ -228,21 +228,17 @@ INSERT INTO EDUCATION (Degree, Grade, ExperienceID) VALUES
 ('B.Sc. in Computer Science', 3.8, 1),
 ('M.A. in Data Science', 3.6, 4),
 ('B.A. in Project Management', 3.7, 10),
-('B.F.A. in UX Design', 3.9, 11),
-('B.B.A. in Marketing', 3.5, 13);
+('B.F.A. in UX Design', 3.9, 7),
+('B.B.A. in Marketing', 3.5, 8);
 
 -- Insert into EMPLOYMENT
 INSERT INTO EMPLOYMENT (JobTitle, JobDescription, ExperienceID) VALUES
 ('Software Engineer', 'Developed backend services using Java and Spring Framework.', 2),
 ('Data Analyst', 'Performed data cleaning and visualization using Python and Tableau.', 5),
-('Project Manager', 'Led cross-functional teams to deliver projects on time.', 7),
-('UX Designer', 'Designed user interfaces and conducted usability testing.', 9),
-('Marketing Specialist', 'Implemented digital marketing campaigns to increase brand awareness.', 15);
+('Marketing Specialist', 'Implemented digital marketing campaigns to increase brand awareness.', 8);
 
 -- Insert into VOLUNTEER
 INSERT INTO VOLUNTEER (RoleName, ExperienceID) VALUES
 ('Volunteer Coordinator', 3),
 ('Data Volunteer', 6),
-('Event Organizer', 10),
-('Graphic Designer Volunteer', 11),
-('Community Outreach Volunteer', 13);
+('Animal Shelter Volunteer', 9);
