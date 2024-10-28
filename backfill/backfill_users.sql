@@ -11,7 +11,7 @@ CREATE TABLE users (
 
 -- Insert 10 rows of realistic dummy data into the 'users' table
 INSERT INTO users (username, email) VALUES
-('JohnDoe', 'john.doe@example.com'),
+('RoxMai', 'rox.mai@bbju.com'),
 ('JaneSmith', 'jane.smith@example.com'),
 ('MikeBrown', 'mike.brown@example.com'),
 ('EmilyDavis', 'emily.davis@example.com'),
