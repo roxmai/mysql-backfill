@@ -1,23 +1,129 @@
--- Drop the 'users' table if it exists
-DROP TABLE IF EXISTS users;
+-- Drop tables if they already exist to ensure a clean setup
+DROP TABLE IF EXISTS COVERLETTER;
+DROP TABLE IF EXISTS RESUME;
+DROP TABLE IF EXISTS EDUCATION;
+DROP TABLE IF EXISTS EMPLOYMENT;
+DROP TABLE IF EXISTS VOLUNTEER;
+DROP TABLE IF EXISTS DOCUMENT;
+DROP TABLE IF EXISTS JOBDESCRIPTION;
+DROP TABLE IF EXISTS JOBAPPLICATION;
+DROP TABLE IF EXISTS EXPERIENCE;
+DROP TABLE IF EXISTS CREDENTIAL;
+DROP TABLE IF EXISTS USERS;
 
--- Create a table named 'users'
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    email VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- Create USERS table
+CREATE TABLE USERS (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    PhoneNumber VARCHAR(20),
+    JobStatus VARCHAR(50) NOT NULL,
+    DateJoin DATE NOT NULL
+) ENGINE=InnoDB;
 
--- Insert 10 rows of realistic dummy data into the 'users' table
-INSERT INTO users (username, email) VALUES
-('RoxMai', 'rox.mai@bbju.com'),
-('JaneSmith', 'jane.smith@example.com'),
-('MikeBrown', 'mike.brown@example.com'),
-('EmilyDavis', 'emily.davis@example.com'),
-('ChrisWilson', 'chris.wilson@example.com'),
-('AnnaTaylor', 'anna.taylor@example.com'),
-('JamesWhite', 'james.white@example.com'),
-('SarahClark', 'sarah.clark@example.com'),
-('DavidLewis', 'david.lewis@example.com'),
-('LauraHall', 'laura.hall@example.com');
+-- Create JOBAPPLICATION table
+CREATE TABLE JOBAPPLICATION (
+    ApplicationID INT AUTO_INCREMENT PRIMARY KEY,
+    Status ENUM('Not started', 'In progress', 'Applied', 'Interview', 'Rejected', 'Accepted') NOT NULL,
+    UserID INT NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create JOBDESCRIPTION table
+CREATE TABLE JOBDESCRIPTION (
+    JobID INT AUTO_INCREMENT PRIMARY KEY,
+    JobTitle VARCHAR(255) NOT NULL,
+    Company VARCHAR(255) NOT NULL,
+    JobDescription TEXT NOT NULL,
+    ApplicationID INT NOT NULL UNIQUE,
+    FOREIGN KEY (ApplicationID) REFERENCES JOBAPPLICATION(ApplicationID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create DOCUMENT table
+CREATE TABLE DOCUMENT (
+    DocumentID INT AUTO_INCREMENT PRIMARY KEY,
+    DocumentType ENUM('Cover Letter', 'Resume') NOT NULL,
+    ApplicationID INT NOT NULL UNIQUE,
+    FOREIGN KEY (ApplicationID) REFERENCES JOBAPPLICATION(ApplicationID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create EXPERIENCE table
+CREATE TABLE EXPERIENCE (
+    ExperienceID INT AUTO_INCREMENT PRIMARY KEY,
+    ExperienceType ENUM('Education', 'Employment', 'Volunteer') NOT NULL,
+    OrganizationName VARCHAR(255) NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE,
+    UserID INT NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create CREDENTIAL table
+CREATE TABLE CREDENTIAL (
+    CredentialID INT AUTO_INCREMENT PRIMARY KEY,
+    CredentialName VARCHAR(255) NOT NULL,
+    IssueOrganization VARCHAR(255) NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE,
+    UserID INT NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create COVERLETTER table
+CREATE TABLE COVERLETTER (
+    CoverLetterBody TEXT NOT NULL,
+    DocumentID INT PRIMARY KEY,
+    FOREIGN KEY (DocumentID) REFERENCES DOCUMENT(DocumentID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create RESUME table
+CREATE TABLE RESUME (
+    ResumeBody TEXT NOT NULL,
+    DocumentID INT PRIMARY KEY,
+    FOREIGN KEY (DocumentID) REFERENCES DOCUMENT(DocumentID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create EDUCATION table
+CREATE TABLE EDUCATION (
+    Degree VARCHAR(100) NOT NULL,
+    Grade FLOAT,
+    ExperienceID INT PRIMARY KEY,
+    FOREIGN KEY (ExperienceID) REFERENCES EXPERIENCE(ExperienceID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create EMPLOYMENT table
+CREATE TABLE EMPLOYMENT (
+    JobTitle VARCHAR(255) NOT NULL,
+    JobDescription TEXT,
+    ExperienceID INT PRIMARY KEY,
+    FOREIGN KEY (ExperienceID) REFERENCES EXPERIENCE(ExperienceID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Create VOLUNTEER table
+CREATE TABLE VOLUNTEER (
+    RoleName VARCHAR(255) NOT NULL,
+    ExperienceID INT PRIMARY KEY,
+    FOREIGN KEY (ExperienceID) REFERENCES EXPERIENCE(ExperienceID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
