@@ -63,7 +63,8 @@ def execute_sql_scripts(connection, folder_path):
 
 def main():
     # Path to your terraform.tfvars file
-    tfvars_path = 'terraform.tfvars'
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    tfvars_path = os.path.join(script_dir, 'terraform.tfvars')
 
     # Read variables from tfvars file
     tfvars = read_tfvars(tfvars_path)
