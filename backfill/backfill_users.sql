@@ -3,12 +3,10 @@ DROP TABLE IF EXISTS COVERLETTER;
 DROP TABLE IF EXISTS RESUME;
 DROP TABLE IF EXISTS EDUCATION;
 DROP TABLE IF EXISTS EMPLOYMENT;
-DROP TABLE IF EXISTS VOLUNTEER;
 DROP TABLE IF EXISTS DOCUMENT;
 DROP TABLE IF EXISTS JOBDESCRIPTION;
 DROP TABLE IF EXISTS JOBAPPLICATION;
 DROP TABLE IF EXISTS EXPERIENCE;
-DROP TABLE IF EXISTS CREDENTIAL;
 DROP TABLE IF EXISTS USERS;
 
 -- Create USERS table
@@ -58,21 +56,8 @@ CREATE TABLE DOCUMENT (
 -- Create EXPERIENCE table
 CREATE TABLE EXPERIENCE (
     ExperienceID INT AUTO_INCREMENT PRIMARY KEY,
-    ExperienceType ENUM('Education', 'Employment', 'Volunteer') NOT NULL,
+    ExperienceType ENUM('Education', 'Employment') NOT NULL,
     OrganizationName VARCHAR(255) NOT NULL,
-    StartDate DATE NOT NULL,
-    EndDate DATE,
-    UserID INT NOT NULL,
-    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-) ENGINE=InnoDB;
-
--- Create CREDENTIAL table
-CREATE TABLE CREDENTIAL (
-    CredentialID INT AUTO_INCREMENT PRIMARY KEY,
-    CredentialName VARCHAR(255) NOT NULL,
-    IssueOrganization VARCHAR(255) NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE,
     UserID INT NOT NULL,
@@ -119,14 +104,6 @@ CREATE TABLE EMPLOYMENT (
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- Create VOLUNTEER table
-CREATE TABLE VOLUNTEER (
-    RoleName VARCHAR(255) NOT NULL,
-    ExperienceID INT PRIMARY KEY,
-    FOREIGN KEY (ExperienceID) REFERENCES EXPERIENCE(ExperienceID)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-) ENGINE=InnoDB;
 
 -- Insert dummy data
 -- Insert into USERS
@@ -185,27 +162,12 @@ INSERT INTO DOCUMENT (DocumentType, ApplicationID) VALUES
 INSERT INTO EXPERIENCE (ExperienceType, OrganizationName, StartDate, EndDate, UserID) VALUES
 ('Education', 'State University', '2018-09-01', '2022-06-30', 1),
 ('Employment', 'TechCorp', '2022-07-01', NULL, 1),
-('Volunteer', 'Helping Hands', '2020-01-15', '2021-12-31', 2),
 ('Education', 'City College', '2015-09-01', '2019-05-30', 3),
 ('Employment', 'DataSolutions', '2020-08-01', NULL, 4),
-('Volunteer', 'Food Bank', '2019-03-01', '2020-11-30', 5),
 ('Education', 'Online University', '2017-01-10', '2019-12-20', 6),
 ('Employment', 'BuildIt', '2021-02-01', NULL, 7),
-('Volunteer', 'Animal Shelter', '2018-05-01', '2019-04-30', 8),
 ('Employment', 'CreativeApps', '2022-01-15', NULL, 9);
 
--- Insert into CREDENTIAL
-INSERT INTO CREDENTIAL (CredentialName, IssueOrganization, StartDate, EndDate, UserID) VALUES
-('Certified Java Developer', 'Oracle', '2021-05-01', '2024-05-01', 1),
-('Data Analysis Certification', 'DataCamp', '2022-03-15', '2025-03-15', 2),
-('Project Management Professional', 'PMI', '2020-07-20', '2023-07-20', 3),
-('UX Design Certification', 'UX Academy', '2021-09-10', '2024-09-10', 4),
-('Digital Marketing Certificate', 'Google', '2022-01-05', '2025-01-05', 5),
-('AWS Certified Solutions Architect', 'Amazon', '2020-11-25', '2023-11-25', 6),
-('Certified Scrum Master', 'Scrum Alliance', '2021-04-18', '2024-04-18', 7),
-('Network Security Certification', 'Cisco', '2019-08-30', '2022-08-30', 8),
-('Content Marketing Certification', 'HubSpot', '2022-02-14', '2025-02-14', 9),
-('Quality Assurance Certification', 'ISTQB', '2021-12-01', '2024-12-01', 10);
 
 -- Insert into COVERLETTER
 INSERT INTO COVERLETTER (CoverLetterBody, DocumentID) VALUES
@@ -236,9 +198,3 @@ INSERT INTO EMPLOYMENT (JobTitle, JobDescription, ExperienceID) VALUES
 ('Software Engineer', 'Developed backend services using Java and Spring Framework.', 2),
 ('Data Analyst', 'Performed data cleaning and visualization using Python and Tableau.', 5),
 ('Marketing Specialist', 'Implemented digital marketing campaigns to increase brand awareness.', 8);
-
--- Insert into VOLUNTEER
-INSERT INTO VOLUNTEER (RoleName, ExperienceID) VALUES
-('Volunteer Coordinator', 3),
-('Data Volunteer', 6),
-('Animal Shelter Volunteer', 9);
